@@ -40,8 +40,10 @@ INSTALLED_APPS = [
 
     'psycopg2',
     'rest_framework',
+    'django_extensions',
 
-    'api.apps.core'
+    'api.apps.core',
+    'api.apps.blog'
 ]
 
 MIDDLEWARE = [
@@ -130,7 +132,9 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'api.apps.core.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
-
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
 }
