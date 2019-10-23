@@ -17,10 +17,4 @@ class ArticleViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Article.objects
 
-    @action(detail=False, methods=['get'])
-    def get_sorted_by_pub_date(self, *args):
-        queryset = self.get_queryset().sort_by_pub_date()
-        serializer = self.get_serializer(instance=queryset, many=True)
-        return Response({'entries': serializer.data}, status=status.HTTP_200_OK)
-
 

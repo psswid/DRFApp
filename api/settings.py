@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
     'api.apps.core',
     'api.apps.blog',
-    'api.apps.articles'
+    'api.apps.articles',
+    'api.apps.comments'
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,4 @@
-from api.apps.core.renders import ApiJSONRender
+from api.apps.core.renderers import ApiJSONRender
 
 
 class EntryJSONRenderer(ApiJSONRender):
