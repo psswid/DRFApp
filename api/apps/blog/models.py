@@ -1,29 +1,24 @@
+from datetime import datetime
 from django.db import models
+from django.contrib.contenttypes.fields import GenericRelation
 
 from api.apps.core.models import BaseModel
-
-
-class EntryQuerySet(models.QuerySet):
-
-    def pub_date(self):
-        return self.order_by('-pub_date')
+from api.apps.comments.models import Comment
 
 
 class EntryManager(models.Manager):
 
     def get_queryset(self):
-        return EntryQuerySet(self.model, using=self._db)
-
-    def sort_by_pub_date(self):
-        return self.get_queryset().pub_date()
+        return super().get_queryset().filter(pub_date__lte=datetime.now()).order_by('-pub_date')
 
 
 class Entry(BaseModel):
 
     title = models.CharField(db_index=True, max_length=255)
     body = models.TextField()
-    pub_date = models.DateTimeField(null=True)
+    pub_date = models.DateTimeField()
     comments_count = models.IntegerField(default=0)
+    comments = GenericRelation(Comment)
 
     objects = EntryManager()
 

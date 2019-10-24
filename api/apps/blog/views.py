@@ -15,21 +15,6 @@ class EntryViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny,]
 
     def get_queryset(self):
-        return Entry.objects
+        return Entry.objects.all()
 
-    @action(detail=False, methods=['get'])
-    def get_sorted_by_pub_date(self, *args):
-        queryset = self.get_queryset().sort_by_pub_date()
-        serializer = self.get_serializer(instance=queryset, many=True)
-        return Response({'entries': serializer.data}, status=status.HTTP_200_OK)
-
-    # TODO:do poprawy
-    # @action(detail=False, methods=['put'])
-    # def set_publicated(self, request, entry_pk=None):
-    #     try:
-    #         entry = Entry.objects.get(pk=entry_pk)
-    #     except Entry.DoesNotExist:
-    #         raise NotFound("Entry not found.")
-    #
-    #     entry.pub_date()
 
