@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'psycopg2',
     'rest_framework',
     'django_extensions',
+    'django_elasticsearch_dsl',
 
     'api.apps.core',
     'api.apps.blog',
@@ -139,4 +140,10 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
+}
+
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
 }
