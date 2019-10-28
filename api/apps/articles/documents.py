@@ -46,7 +46,7 @@ class ArticleDocument(DocType):
 
     def get_queryset(self):
         return super(ArticleDocument, self).get_queryset().select_related(
-            'comment'
+            'comments'
         )
 
     def get_instances_from_related(self, related_instance):
