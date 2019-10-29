@@ -1,4 +1,4 @@
-from api.apps.core.renderers import ApiJSONRender
+from api import ApiJSONRender
 
 
 class CommentJSONRenderer(ApiJSONRender):

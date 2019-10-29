@@ -5,5 +5,5 @@ services:
     volumes:
       - data:/usr/share/elasticsearch/data
 
-  volumes:
-    data:
+volumes:
+  data:
