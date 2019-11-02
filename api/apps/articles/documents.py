@@ -1,6 +1,8 @@
 from elasticsearch_dsl import analyzer
 from django_elasticsearch_dsl import fields, Index
 from django_elasticsearch_dsl.documents import DocType
+from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+
 
 from .models import Article
 from api.apps.comments.models import Comment
@@ -13,42 +15,37 @@ html_strip = analyzer(
     char_filter=["html_strip"]
 )
 
-article = Index('article')
+article_index = Index('articles')
 
-article.settings(
+article_index.settings(
     number_of_shards=1,
     number_of_replicas=0
 )
 
 
-@article.doc_type
+@article_index.doc_type
 class ArticleDocument(DocType):
+    title = fields.TextField(
+        attr='title',
+        fields={
+            'suggest': fields.Completion(),
+        }
+    )
+    body = fields.TextField(
+        attr='body',
+        fields={
+            'suggest': fields.Completion(),
+        }
+    )
 
-    comment = fields.NestedField(properties={
-        'body': fields.TextField(analyzer=html_strip)
-    })
-
-    class Index:
-        name = 'articles'
-
-        settings = {'number_of_shards': 1,
-                    'number_of_replicas': 0}
+    comments_count = fields.IntegerField()
 
     class Django:
         model = Article
-
         fields = [
-            'title',
-            'body',
+            'id',
+            'pub_date',
+            'created_at',
+            'updated_at',
         ]
 
-        related_models = [Comment]
-
-    def get_queryset(self):
-        return super(ArticleDocument, self).get_queryset().select_related(
-            'comments'
-        )
-
-    def get_instances_from_related(self, related_instance):
-        if isinstance(related_instance, Comment):
-            return related_instance.article

@@ -1,13 +1,14 @@
 from django.conf.urls import include
 from django.urls import path
 
-from rest_framework.routers import DefaultRouter
+from rest_framework_extensions.routers import ExtendedDefaultRouter
 
-from .views import ArticleViewSet
+from .views import ArticleViewSet, ArticleDocumentViewSet
 
 
-router = DefaultRouter(trailing_slash=False)
+router = ExtendedDefaultRouter(trailing_slash=False)
 router.register('articles', ArticleViewSet)
+router.register('es/articles', ArticleDocumentViewSet, base_name='articledocument')
 
 
 urlpatterns = [
