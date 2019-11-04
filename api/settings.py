@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'django_elasticsearch_dsl',
+    'generic_relations',
 
     'api.apps.core',
     'api.apps.blog',

@@ -3,14 +3,12 @@ from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
 from .models import Article
 from .documents import ArticleDocument
-from api.apps.comments.serializers import CommentSerializer
+from api.apps.comments.serializers import CommentObjectSerializer
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 
-    comments = CommentSerializer(
-        many=True,
-    )
+    comments = CommentObjectSerializer(many=True)
 
     class Meta:
         model = Article

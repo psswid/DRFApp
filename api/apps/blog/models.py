@@ -18,7 +18,7 @@ class Entry(BaseModel):
     body = models.TextField()
     pub_date = models.DateTimeField(auto_now=True)
     comments_count = models.IntegerField(default=0)
-    comments = GenericRelation(Comment)
+    comments = GenericRelation(Comment, null=True)
 
     objects = EntryManager()
 

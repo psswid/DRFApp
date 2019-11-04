@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .models import Comment, ContentType
 from .documents import CommentDocument
 from .renderers import CommentJSONRenderer
-from .serializers import CommentSerializer, CommentDocumentSerializer
+from .serializers import CommentObjectSerializer, CommentDocumentSerializer
 
 from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_RANGE,
@@ -27,19 +27,19 @@ from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    serializer_class = CommentObjectSerializer
     renderer_classes = (CommentJSONRenderer,)
     permission_classes = [AllowAny,]
 
     def get_queryset(self):
         return Comment.objects.all()
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class CommentDocumentViewSet(DocumentViewSet):

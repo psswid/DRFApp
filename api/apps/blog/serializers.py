@@ -3,12 +3,12 @@ from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
 from .models import Entry
 from .documents import EntryDocument
-from api.apps.comments.serializers import CommentSerializer
+from api.apps.comments.serializers import CommentObjectSerializer
 
 
 class EntrySerializer(serializers.ModelSerializer):
 
-    comments = CommentSerializer(many=True)
+    comments = CommentObjectSerializer(many=True)
 
     class Meta:
         model = Entry
