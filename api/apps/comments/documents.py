@@ -2,7 +2,7 @@ from elasticsearch_dsl import analyzer
 from django_elasticsearch_dsl import fields, Index
 from django_elasticsearch_dsl.documents import DocType
 
-from .models import Article
+from .models import Comment
 
 
 html_strip = analyzer(
@@ -12,22 +12,17 @@ html_strip = analyzer(
     char_filter=["html_strip"]
 )
 
-article_index = Index('articles')
+comment_index = Index('comments')
 
-article_index.settings(
+comment_index.settings(
     number_of_shards=1,
     number_of_replicas=0
 )
 
 
-@article_index.doc_type
-class ArticleDocument(DocType):
-    title = fields.TextField(
-        attr='title',
-        fields={
-            'suggest': fields.Completion(),
-        }
-    )
+@comment_index.doc_type
+class CommentDocument(DocType):
+
     body = fields.TextField(
         attr='body',
         fields={
@@ -35,15 +30,11 @@ class ArticleDocument(DocType):
         }
     )
 
-    # TODO: na koniec pomyslec co z comments
-
-    comments_count = fields.IntegerField()
-
     class Django:
-        model = Article
+        model = Comment
         fields = [
             'id',
-            'pub_date',
+            'object_id',
             'created_at',
             'updated_at',
         ]

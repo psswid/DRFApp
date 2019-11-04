@@ -1,7 +1,5 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.permissions import (AllowAny, IsAdminUser)
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 from .models import Article
 from .renderers import ArticleJSONRenderer
@@ -78,10 +76,11 @@ class ArticleDocumentViewSet(DocumentViewSet):
     ordering_fields = {
         'id': 'id',
         'title': 'title.raw',
-        'created': 'created',
+        'created_at': 'created_at',
         'updated_at': 'updated_at',
         'pub_date': 'pub_date',
     }
 
     # Specify default ordering
     ordering = ('id', 'created_at',)
+

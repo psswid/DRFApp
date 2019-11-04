@@ -2,7 +2,7 @@ from elasticsearch_dsl import analyzer
 from django_elasticsearch_dsl import fields, Index
 from django_elasticsearch_dsl.documents import DocType
 
-from .models import Article
+from .models import Entry
 
 
 html_strip = analyzer(
@@ -12,16 +12,16 @@ html_strip = analyzer(
     char_filter=["html_strip"]
 )
 
-article_index = Index('articles')
+entry_index = Index('entries')
 
-article_index.settings(
+entry_index.settings(
     number_of_shards=1,
     number_of_replicas=0
 )
 
 
-@article_index.doc_type
-class ArticleDocument(DocType):
+@entry_index.doc_type
+class EntryDocument(DocType):
     title = fields.TextField(
         attr='title',
         fields={
@@ -40,7 +40,7 @@ class ArticleDocument(DocType):
     comments_count = fields.IntegerField()
 
     class Django:
-        model = Article
+        model = Entry
         fields = [
             'id',
             'pub_date',
