@@ -1,12 +1,11 @@
-from rest_framework import generics, viewsets, status
+from rest_framework import viewsets
 from rest_framework.permissions import (AllowAny, IsAdminUser)
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
-from .models import Comment, ContentType
+from .models import Comment
 from .documents import CommentDocument
 from .renderers import CommentJSONRenderer
 from .serializers import CommentObjectSerializer, CommentDocumentSerializer
+from .tasks import count_comments
 
 from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_RANGE,
@@ -34,12 +33,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Comment.objects.all()
 
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    def create(self, request, *args, **kwargs):
+        response = super().create(request)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        obj_url = serializer.data
+        count_comments(obj_url)
+        return response
 
 
 class CommentDocumentViewSet(DocumentViewSet):

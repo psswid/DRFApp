@@ -32,18 +32,6 @@ class ArticleViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Article.objects
 
-    # @action(methods=['post'], detail=True)
-    # def set_comment(self, request, pk=None):
-    #     article = self.get_object()
-    #     serializer = CommentSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         article.set_comment(serializer.data['comments'])
-    #         article.save()
-    #         return Response(status=status.HTTP_201_CREATED)
-    #     else:
-    #         return Response(serializer.errors,
-    #                         status=status.HTTP_400_BAD_REQUEST)
-
 
 class ArticleDocumentViewSet(DocumentViewSet):
     document = ArticleDocument
