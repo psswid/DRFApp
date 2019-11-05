@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class BaseModel(models.Model):
     # A timestamp representing when this object was created.
     created_at = models.DateTimeField(auto_now_add=True)

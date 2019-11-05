@@ -1,12 +1,14 @@
 from rest_framework import serializers
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
 from .models import Article
-from api.apps.comments.serializers import CommentSerializer
+from .documents import ArticleDocument
+from api.apps.comments.serializers import CommentObjectSerializer
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 
-    comments = CommentSerializer(many=True)
+    comments = CommentObjectSerializer(many=True)
 
     class Meta:
         model = Article
@@ -21,3 +23,19 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
             'updated_at'
         )
         depth = 1
+
+
+class ArticleDocumentSerializer(DocumentSerializer):
+
+    class Meta:
+        document = ArticleDocument
+        fields = (
+            'id',
+            'title',
+            'body',
+            'comments',
+            'created_at',
+            'updated_at',
+            'pub_date',
+        )
+

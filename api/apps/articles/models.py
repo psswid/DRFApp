@@ -16,9 +16,9 @@ class Article(BaseModel):
 
     title = models.CharField(db_index=True, max_length=255)
     body = models.TextField()
-    pub_date = models.DateTimeField()
+    pub_date = models.DateTimeField(auto_now=True)
     comments_count = models.IntegerField(default=0)
-    comments = GenericRelation(Comment)
+    comments = GenericRelation(Comment, null=True)
 
     objects = ArticleManager()
 

@@ -4,7 +4,7 @@ from .models import Article
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    fields = ['title', 'body', 'pub_date']
+    fields = ['title', 'body']
 
 
 admin.site.register(Article, ArticleAdmin)

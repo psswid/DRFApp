@@ -3,12 +3,13 @@ from django.urls import path
 
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 
-from .views import ArticleViewSet, ArticleDocumentViewSet
+from .views import CommentViewSet, CommentDocumentViewSet
 
 
 router = ExtendedDefaultRouter(trailing_slash=False)
-router.register('articles', ArticleViewSet)
-router.register('es/articles/', ArticleDocumentViewSet, base_name='articledocument')
+router.register('comments', CommentViewSet)
+router.register('es/comments/', CommentDocumentViewSet, base_name='commentdocument')
+
 
 urlpatterns = [
     path('', include(router.urls)),
