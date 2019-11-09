@@ -8,3 +8,8 @@ elasticsearch-dsl>=7.0.0,<8.0.0
 django-elasticsearch-dsl==7.1.0
 rest-framework-generic-relations==1.2.2
 drf-nested-routers==0.91
+django-rest-auth[with_social]
+django-compat==1.0.15
+django-hijack==2.1.10
+django-hijack-admin==2.1.10
+

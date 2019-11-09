@@ -15,11 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import FacebookLogin, TwitterLogin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('hijack/', include('hijack.urls', namespace='hijack')),
+
+    path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+    path('rest-auth/twitter/', TwitterLogin.as_view(), name='twitter_login'),
 
     path('', include('api.apps.blog.urls')),
     path('', include('api.apps.articles.urls')),
-    path('', include('api.apps.comments.urls'))
+    path('', include('api.apps.comments.urls')),
+    path('', include('api.apps.users.urls'))
 ]

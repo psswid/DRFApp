@@ -27,7 +27,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     renderer_classes = (ArticleJSONRenderer,)
-    permission_classes = [AllowAny,]
+    permission_classes = [AllowAny, ]
 
     def get_queryset(self):
         return Article.objects
@@ -82,4 +82,3 @@ class ArticleDocumentViewSet(DocumentViewSet):
 
     # Specify default ordering
     ordering = ('id', 'created_at',)
-
