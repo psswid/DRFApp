@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% load static hijack_tags %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static 'hijack/hijack-styles.css' %}" />
+{% endblock %}
+
+
+
+{% block nav-global %}
+    {% hijack_notification %}
+{% endblock %}

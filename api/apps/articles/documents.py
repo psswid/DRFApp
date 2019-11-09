@@ -4,7 +4,6 @@ from django_elasticsearch_dsl.documents import DocType
 
 from .models import Article
 
-
 html_strip = analyzer(
     'html_strip',
     tokenizer="standard",
@@ -47,4 +46,3 @@ class ArticleDocument(DocType):
             'created_at',
             'updated_at',
         ]
-
