@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework import generics, viewsets, status
 from rest_framework.permissions import (AllowAny, IsAdminUser)
 from rest_framework.decorators import action
@@ -85,3 +86,14 @@ class EntryDocumentViewSet(DocumentViewSet):
     # Specify default ordering
     ordering = ('id', 'created_at',)
 
+
+def search(request):
+
+    q = request.GET.get('q')
+
+    if q:
+        entries = EntryDocument.search().query("match", body=q)
+    else:
+        entries = ''
+
+    return render(request, 'search/search.html', {'entries': entries})

@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework import generics, viewsets, status
 from rest_framework.permissions import (AllowAny, IsAdminUser)
 
@@ -82,3 +83,15 @@ class ArticleDocumentViewSet(DocumentViewSet):
 
     # Specify default ordering
     ordering = ('id', 'created_at',)
+
+
+def search(request):
+
+    q = request.GET.get('q')
+
+    if q:
+        articles = ArticleDocument.search().query("match", body=q)
+    else:
+        articles = ''
+
+    return render(request, 'search/search.html', {'articles': articles})

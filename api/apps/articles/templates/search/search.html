@@ -1,0 +1,17 @@
+<form method="get">
+
+  <input id="q" name="q" type="text" placeholder="articles search...">
+
+</form>
+
+{% for item in articles %}
+
+  {{ item.id }}
+  <br>
+  {{ item.title }}
+  <br>
+  {{ item.body }}
+
+  <br>
+
+{% endfor %}
