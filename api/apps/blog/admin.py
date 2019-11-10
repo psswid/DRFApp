@@ -4,7 +4,7 @@ from .models import Entry
 
 
 class EntryAdmin(admin.ModelAdmin):
-    fields = ['title', 'body', 'pub_date']
+    fields = ['title', 'body']
 
 
 admin.site.register(Entry, EntryAdmin)

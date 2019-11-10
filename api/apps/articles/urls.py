@@ -3,7 +3,7 @@ from django.urls import path
 
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 
-from .views import ArticleViewSet, ArticleDocumentViewSet
+from .views import ArticleViewSet, ArticleDocumentViewSet, search
 
 
 router = ExtendedDefaultRouter(trailing_slash=False)
@@ -12,4 +12,5 @@ router.register('es/articles/', ArticleDocumentViewSet, base_name='articledocume
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('articles/search/', search, name='articles-search'),
 ]
