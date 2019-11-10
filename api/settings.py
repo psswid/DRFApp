@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'api.apps.blog',
     'api.apps.articles',
     'api.apps.comments',
+    'api.apps.products',
 ]
 
 SITE_ID = 1

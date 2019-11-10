@@ -29,5 +29,6 @@ urlpatterns = [
     path('', include('api.apps.blog.urls')),
     path('', include('api.apps.articles.urls')),
     path('', include('api.apps.comments.urls')),
-    path('', include('api.apps.users.urls'))
+    path('', include('api.apps.users.urls')),
+    path('', include('api.apps.products.urls')),
 ]
