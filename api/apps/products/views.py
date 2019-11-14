@@ -15,4 +15,4 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny, ]
 
     def get_queryset(self):
-        return Product.objects
+        return Product.objects.all().order_by('-id')
