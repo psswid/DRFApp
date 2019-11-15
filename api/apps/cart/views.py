@@ -2,7 +2,6 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
-from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.db.models import FloatField
@@ -29,7 +28,7 @@ class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
-    @action(methods=['post', 'put'])
+    @action(detail=True, methods=['post', 'put'])
     def add_to_cart(self, request, pk=None):
         """Add an item to a user's cart.
         Adding to cart is disallowed if there is not enough inventory for the
@@ -65,7 +64,7 @@ class CartViewSet(viewsets.ModelViewSet):
         serializer = CartSerializer(cart)
         return Response(serializer.data)
 
-    @action(methods=['post', 'put'])
+    @action(detail=True, methods=['post', 'put'])
     def remove_from_cart(self, request, pk=None):
         """Remove an item from a user's cart.
         Like on the Everlane website, customers can only remove items from the
