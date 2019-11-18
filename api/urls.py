@@ -19,7 +19,7 @@ from .views import FacebookLogin, TwitterLogin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
+    # path('accounts/', include('allauth.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('hijack/', include('hijack.urls', namespace='hijack')),
 
@@ -31,4 +31,5 @@ urlpatterns = [
     path('', include('api.apps.comments.urls')),
     path('', include('api.apps.users.urls')),
     path('', include('api.apps.products.urls')),
+    path('', include('api.apps.cart.urls')),
 ]

@@ -9,7 +9,11 @@ from decimal import Decimal
 
 
 class Cart(BaseModel):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.OneToOneField(
+        User,
+        related_name='cart',
+        on_delete=models.CASCADE
+    )
 
 
 class CartItem(BaseModel):

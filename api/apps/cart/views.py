@@ -39,6 +39,11 @@ class CartViewSet(viewsets.ModelViewSet):
         ----------
         request: request
         Return the updated cart.
+        Json
+        {
+            "product_id": "1",
+            "quantity": "2"
+        }
         """
         cart = self.get_object()
         try:
@@ -135,34 +140,25 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer: OrderSerialiazer
             Serialized representation of Order we are creating.
         """
+
         try:
-            purchaser_id = self.request.data['customer']
+            purchaser_id = self.request.data['owner']
             user = User.objects.get(pk=purchaser_id)
         except:
             raise serializers.ValidationError(
-                'User was not found'
+                'User was not found dupaa'
             )
-
         cart = user.cart
-
-        for cart_item in cart.items.all():
-            if cart_item.product.available_inventory - cart_item.quantity < 0:
-                raise serializers.ValidationError(
-                    'We do not have enough inventory of ' + str(cart_item.product.title) + \
-                    'to complete your purchase. Sorry, we will restock soon'
-                )
-
         # find the order total using the quantity of each cart item and the product's price
         cart_items = cart.items.aggregate(total=Sum(F('quantity')*F('product__price'),output_field=FloatField()))
 
-        order_total = round(cart_items['total'], 2)
-        order = serializer.save(customer=user, total=order_total)
 
+        order_total = round(cart_items['total'], 2)
+        order = serializer.save(owner=user, total=order_total)
         order_items = []
         for cart_item in cart.items.all():
             order_items.append(OrderItem(order=order, product=cart_item.product, quantity=cart_item.quantity))
             # available_inventory should decrement by the appropriate amount
-            cart_item.product.available_inventory -= cart_item.quantity
             cart_item.product.save()
 
 
