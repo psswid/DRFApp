@@ -4,19 +4,19 @@ from .models import Cart, CartItem, Order, OrderItem
 
 
 class CartAdmin(admin.ModelAdmin):
-    fields = ['owner']
+    fields = ["owner"]
 
 
 class CartItemAdmin(admin.ModelAdmin):
-    fields = ['cart', 'product', 'quantity']
+    fields = ["cart", "product", "quantity"]
 
 
 class OrderAdmin(admin.ModelAdmin):
-    fields = ['owner', 'total']
+    fields = ["owner", "total"]
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    fields = ['order', 'product', 'quantity']
+    fields = ["order", "product", "quantity"]
 
 
 admin.site.register(Cart, CartAdmin)

@@ -7,24 +7,28 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Article',
+            name="Article",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('title', models.CharField(db_index=True, max_length=255)),
-                ('body', models.TextField()),
-                ('pub_date', models.DateTimeField(null=True)),
-                ('comments_count', models.IntegerField(default=0)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("title", models.CharField(db_index=True, max_length=255)),
+                ("body", models.TextField()),
+                ("pub_date", models.DateTimeField(null=True)),
+                ("comments_count", models.IntegerField(default=0)),
             ],
-            options={
-                'ordering': ['-created_at', '-updated_at'],
-                'abstract': False,
-            },
+            options={"ordering": ["-created_at", "-updated_at"], "abstract": False,},
         ),
     ]

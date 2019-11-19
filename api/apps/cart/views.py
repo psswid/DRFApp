@@ -1,35 +1,25 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
-
-
-from django.shortcuts import render
-from django.db.models import FloatField
-from django.db.models import F
-from django.db.models import Sum
-
-from rest_framework import viewsets
-from rest_framework import serializers
-from rest_framework import status
+from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Cart, CartItem, Order, OrderItem
-from .serializers import CartSerializer, CartItemSerializer, OrderSerializer, OrderItemSerializer
-from .tasks import send_order_email
-
 from api.apps.products.models import Product
 from api.apps.users.models import User
+
+from .models import Cart, CartItem, Order, OrderItem
+from .serializers import (CartItemSerializer, CartSerializer,
+                          OrderItemSerializer, OrderSerializer)
+from .tasks import send_order_email
 
 
 class CartViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows carts to be viewed or edited.
     """
+
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
-    @action(detail=True, methods=['post', 'put'])
+    @action(detail=True, methods=["post", "put"])
     def add_to_cart(self, request, pk=None):
         """Add an item to a user's cart.
         Adding to cart is disallowed if there is not enough inventory for the
@@ -48,15 +38,12 @@ class CartViewSet(viewsets.ModelViewSet):
         """
         cart = self.get_object()
         try:
-            product = Product.objects.get(
-                pk=request.data['product_id']
-            )
-            quantity = int(request.data['quantity'])
+            product = Product.objects.get(pk=request.data["product_id"])
+            quantity = int(request.data["quantity"])
         except Exception as e:
             return Response(e, status=status.HTTP_404_NOT_FOUND)
 
-
-        existing_cart_item = CartItem.objects.filter(cart=cart,product=product).first()
+        existing_cart_item = CartItem.objects.filter(cart=cart, product=product).first()
         # before creating a new cart item check if it is in the cart already
         # and if yes increase the quantity of that item
         if existing_cart_item:
@@ -70,7 +57,7 @@ class CartViewSet(viewsets.ModelViewSet):
         serializer = CartSerializer(cart)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['post', 'put'])
+    @action(detail=True, methods=["post", "put"])
     def remove_from_cart(self, request, pk=None):
         """Remove an item from a user's cart.
         Like on the Everlane website, customers can only remove items from the
@@ -85,14 +72,12 @@ class CartViewSet(viewsets.ModelViewSet):
         """
         cart = self.get_object()
         try:
-            product = Product.objects.get(
-                pk=request.data['product_id']
-            )
+            product = Product.objects.get(pk=request.data["product_id"])
         except Exception as e:
             return Response(e, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            cart_item = CartItem.objects.get(cart=cart,product=product)
+            cart_item = CartItem.objects.get(cart=cart, product=product)
         except Exception as e:
             return Response(e, status=status.HTTP_404_NOT_FOUND)
 
@@ -108,20 +93,23 @@ class CartViewSet(viewsets.ModelViewSet):
         serializer = CartSerializer(cart)
         return Response(serializer.data)
 
+
 class CartItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows cart items to be viewed or edited.
     """
+
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows orders to be viewed or created.
     """
+
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-
 
     def perform_create(self, serializer):
         """Add info and perform checks before saving an Order.
@@ -143,28 +131,29 @@ class OrderViewSet(viewsets.ModelViewSet):
         """
 
         try:
-            purchaser_id = self.request.data['owner']
+            purchaser_id = self.request.data["owner"]
             user = User.objects.get(pk=purchaser_id)
         except:
-            raise serializers.ValidationError(
-                'User was not found'
-            )
+            raise serializers.ValidationError("User was not found")
         cart = user.cart
         # find the order total using the quantity of each cart item and the product's price
-        cart_items=cart.items.all()
+        cart_items = cart.items.all()
         order_total = 0
         for item in cart_items:
             item_quantity = item.quantity
             item_product_price = item.product.price
-            item_total = item_quantity*item_product_price
+            item_total = item_quantity * item_product_price
             order_total += item_total
 
         order = serializer.save(owner=user, total=order_total)
         order_items = []
         for cart_item in cart.items.all():
-            order_items.append(OrderItem(order=order, product=cart_item.product, quantity=cart_item.quantity))
+            order_items.append(
+                OrderItem(
+                    order=order, product=cart_item.product, quantity=cart_item.quantity
+                )
+            )
             cart_item.product.save()
-
 
         OrderItem.objects.bulk_create(order_items)
         # use clear instead of delete since it removes all objects from the
@@ -185,13 +174,15 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
 
 class OrderItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows order items to be viewed or edited.
     """
+
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer

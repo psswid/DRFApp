@@ -1,9 +1,4 @@
-from django.views.generic import TemplateView
-
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
-from rest_auth.registration.views import SocialLoginView
-
 from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
 from rest_auth.registration.views import SocialLoginView
 from rest_auth.social_serializers import TwitterLoginSerializer
@@ -16,4 +11,3 @@ class FacebookLogin(SocialLoginView):
 class TwitterLogin(SocialLoginView):
     serializer_class = TwitterLoginSerializer
     adapter_class = TwitterOAuthAdapter
-
