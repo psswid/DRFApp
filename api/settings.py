@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'hijack',
     'compat',
     'hijack_admin',
+    'djcelery_email',
 
     'api.apps.core',
     'api.apps.users',
@@ -194,6 +195,18 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# Email settings
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False # TLS settings
+CELERY_EMAIL_TASK_CONFIG = {
+    'name': 'djcelery_email_send',
+    'ignore_result': True,
+}
 
 # Assuming redirect to localhost api view as user with csrftoken is proper way
 HIJACK_LOGIN_REDIRECT_URL = '/'  # Where admins are redirected to after hijacking a user

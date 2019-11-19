@@ -16,6 +16,7 @@ from rest_framework.response import Response
 
 from .models import Cart, CartItem, Order, OrderItem
 from .serializers import CartSerializer, CartItemSerializer, OrderSerializer, OrderItemSerializer
+from .tasks import send_order_email
 
 from api.apps.products.models import Product
 from api.apps.users.models import User
@@ -146,19 +147,22 @@ class OrderViewSet(viewsets.ModelViewSet):
             user = User.objects.get(pk=purchaser_id)
         except:
             raise serializers.ValidationError(
-                'User was not found dupaa'
+                'User was not found'
             )
         cart = user.cart
         # find the order total using the quantity of each cart item and the product's price
-        cart_items = cart.items.aggregate(total=Sum(F('quantity')*F('product__price'),output_field=FloatField()))
+        cart_items=cart.items.all()
+        order_total = 0
+        for item in cart_items:
+            item_quantity = item.quantity
+            item_product_price = item.product.price
+            item_total = item_quantity*item_product_price
+            order_total += item_total
 
-
-        order_total = round(cart_items['total'], 2)
         order = serializer.save(owner=user, total=order_total)
         order_items = []
         for cart_item in cart.items.all():
             order_items.append(OrderItem(order=order, product=cart_item.product, quantity=cart_item.quantity))
-            # available_inventory should decrement by the appropriate amount
             cart_item.product.save()
 
 
@@ -168,6 +172,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         # disassociates them, which is what we want in order to empty the cart
         # but keep cart items in the db for customer data analysis
         cart.items.clear()
+
+        send_order_email(order, order_items)
 
     def create(self, request, *args, **kwargs):
         """Override the creation of Order objects.
@@ -179,7 +185,6 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        # TODO: tutaj umiescic wysylanie maila, sprawdzic fake smtp, albo jakiegos mailera django
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
