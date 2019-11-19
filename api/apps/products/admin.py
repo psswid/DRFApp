@@ -4,7 +4,7 @@ from .models import Product
 
 
 class ProductAdmin(admin.ModelAdmin):
-    fields = ['name', 'price']
+    fields = ["name", "price"]
 
 
 admin.site.register(Product, ProductAdmin)

@@ -2,6 +2,7 @@ from django.db import models
 
 
 class BaseModel(models.Model):
+    """Base model with dates and dates ordering"""
     # A timestamp representing when this object was created.
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -15,4 +16,4 @@ class BaseModel(models.Model):
         # be ordered in reverse-chronological order. We can override this on a
         # per-model basis as needed, but reverse-chronological is a good
         # default ordering for most models.
-        ordering = ['-created_at', '-updated_at']
+        ordering = ["-created_at", "-updated_at"]

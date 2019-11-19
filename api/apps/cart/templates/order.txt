@@ -1,0 +1,12 @@
+{% block.content %}
+
+Hello {{ user.email }}
+Order {{ order.pk }} ready
+
+{% for item in order_items %}
+{{ item.product.name }} {{ item.quantity }} {{ item.total }}
+{% endfor %}
+
+Order Total: {{ order.order_total }}
+
+{% endblock %}

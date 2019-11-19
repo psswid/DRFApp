@@ -7,7 +7,8 @@ from api.apps.blog.models import Entry
 
 @shared_task
 def count_comments(obj_url):
-    url = obj_url['comment_object']
+    """Celery comments counter changing comments count for related Comment entity"""
+    url = obj_url["comment_object"]
     id = url[-1]
     if "articles" in url:
         article = Article.objects.get(id=id)

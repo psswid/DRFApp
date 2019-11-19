@@ -1,48 +1,33 @@
-from elasticsearch_dsl import analyzer
-from django_elasticsearch_dsl import fields, Index
+from django_elasticsearch_dsl import Index, fields
 from django_elasticsearch_dsl.documents import DocType
+from elasticsearch_dsl import analyzer
 
 from .models import Article
 
 html_strip = analyzer(
-    'html_strip',
+    "html_strip",
     tokenizer="standard",
     filter=["lowercase", "stop", "snowball"],
-    char_filter=["html_strip"]
+    char_filter=["html_strip"],
 )
 
-article_index = Index('articles')
+article_index = Index("articles")
 
-article_index.settings(
-    number_of_shards=1,
-    number_of_replicas=0
-)
+article_index.settings(number_of_shards=1, number_of_replicas=0)
 
 
 @article_index.doc_type
 class ArticleDocument(DocType):
-    title = fields.TextField(
-        attr='title',
-        fields={
-            'suggest': fields.Completion(),
-        }
-    )
-    body = fields.TextField(
-        attr='body',
-        fields={
-            'suggest': fields.Completion(),
-        }
-    )
-
-    # TODO: na koniec pomyslec co z comments
+    title = fields.TextField(attr="title", fields={"suggest": fields.Completion(), })
+    body = fields.TextField(attr="body", fields={"suggest": fields.Completion(), })
 
     comments_count = fields.IntegerField()
 
     class Django:
         model = Article
         fields = [
-            'id',
-            'pub_date',
-            'created_at',
-            'updated_at',
+            "id",
+            "pub_date",
+            "created_at",
+            "updated_at",
         ]
