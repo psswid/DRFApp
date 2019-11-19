@@ -42,9 +42,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Override the creation of Order objects
-        Parameters
-        ----------
-        validated_data: dict
         """
         order = Order.objects.create(**validated_data)
         return order

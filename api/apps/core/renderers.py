@@ -4,6 +4,7 @@ from rest_framework.renderers import JSONRenderer
 
 
 class ApiJSONRender(JSONRenderer):
+    """Base api json render format with errors returning"""
     charset = "utf-8"
     object_label = "object"
     pagination_object_label = "objects"

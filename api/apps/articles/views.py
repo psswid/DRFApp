@@ -19,6 +19,9 @@ from .serializers import ArticleDocumentSerializer, ArticleSerializer
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
+    """
+     API endpoint to Article CRUD
+     """
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     renderer_classes = (ArticleJSONRenderer,)
@@ -31,6 +34,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
 
 class ArticleDocumentViewSet(DocumentViewSet):
+    """
+     API endpoint to Article ElasticSearch query
+     """
     document = ArticleDocument
     serializer_class = ArticleDocumentSerializer
 
@@ -85,7 +91,9 @@ class ArticleDocumentViewSet(DocumentViewSet):
 
 
 def search(request):
-
+    """
+     Html ElasticSearch
+     """
     q = request.GET.get("q")
 
     if q:

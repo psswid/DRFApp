@@ -8,6 +8,7 @@ from django.core.mail import EmailMultiAlternatives
 
 @shared_task
 def send_order_email(order, order_items):
+    """Celery mailer task rendering mail templates and sending order information to order owner"""
     user = order.owner
     html = get_template("templates/order.html")
     txt = get_template("templates/order.txt")

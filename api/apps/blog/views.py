@@ -19,6 +19,9 @@ from .serializers import EntryDocumentSerializer, EntrySerializer
 
 
 class EntryViewSet(viewsets.ModelViewSet):
+    """
+     API endpoint to Entry CRUD
+     """
     queryset = Entry.objects.all()
     serializer_class = EntrySerializer
     renderer_classes = (EntryJSONRenderer,)
@@ -31,6 +34,9 @@ class EntryViewSet(viewsets.ModelViewSet):
 
 
 class EntryDocumentViewSet(DocumentViewSet):
+    """
+     API endpoint to Entry ElasticSearch query
+     """
     document = EntryDocument
     serializer_class = EntryDocumentSerializer
 
@@ -85,6 +91,9 @@ class EntryDocumentViewSet(DocumentViewSet):
 
 
 def search(request):
+    """
+     Html ElasticSearch
+     """
     q = request.GET.get("q")
 
     if q:

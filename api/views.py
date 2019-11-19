@@ -5,9 +5,15 @@ from rest_auth.social_serializers import TwitterLoginSerializer
 
 
 class FacebookLogin(SocialLoginView):
+    """
+    Facebook allauth login endpoint
+    """
     adapter_class = FacebookOAuth2Adapter
 
 
 class TwitterLogin(SocialLoginView):
+    """
+    Twitter allauth login endpoint
+    """
     serializer_class = TwitterLoginSerializer
     adapter_class = TwitterOAuthAdapter

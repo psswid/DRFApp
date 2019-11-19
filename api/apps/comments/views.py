@@ -19,6 +19,9 @@ from .tasks import count_comments
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    """
+     API endpoint Comment CRUD
+     """
     queryset = Comment.objects.all()
     serializer_class = CommentObjectSerializer
     renderer_classes = (CommentJSONRenderer,)
@@ -26,9 +29,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         AllowAny,
     ]
 
-    def get_queryset(self):
-        return Comment.objects.all()
-
+    """AutoCount comments task added"""
     def create(self, request, *args, **kwargs):
         response = super().create(request)
         serializer = self.get_serializer(data=request.data)
@@ -39,6 +40,9 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class CommentDocumentViewSet(DocumentViewSet):
+    """
+    API endpoint to Comment ElasticSearch query
+    """
     document = CommentDocument
     serializer_class = CommentDocumentSerializer
 

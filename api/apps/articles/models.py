@@ -8,6 +8,7 @@ from api.apps.core.models import BaseModel
 
 
 class ArticleManager(models.Manager):
+    """Automatically return earliest published"""
     def get_queryset(self):
         return (
             super()

@@ -13,22 +13,14 @@ from .tasks import send_order_email
 
 class CartViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows carts to be viewed or edited.
+    API endpoint to Cart CRUD
     """
-
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
     @action(detail=True, methods=["post", "put"])
     def add_to_cart(self, request, pk=None):
         """Add an item to a user's cart.
-        Adding to cart is disallowed if there is not enough inventory for the
-        product available. If there is, the quantity is increased on an existing
-        cart item or a new cart item is created with that quantity and added
-        to the cart.
-        Parameters
-        ----------
-        request: request
         Return the updated cart.
         Json
         {
@@ -60,14 +52,6 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post", "put"])
     def remove_from_cart(self, request, pk=None):
         """Remove an item from a user's cart.
-        Like on the Everlane website, customers can only remove items from the
-        cart 1 at a time, so the quantity of the product to remove from the cart
-        will always be 1. If the quantity of the product to remove from the cart
-        is 1, delete the cart item. If the quantity is more than 1, decrease
-        the quantity of the cart item, but leave it in the cart.
-        Parameters
-        ----------
-        request: request
         Return the updated cart.
         """
         cart = self.get_object()
@@ -165,10 +149,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         send_order_email(order, order_items)
 
     def create(self, request, *args, **kwargs):
-        """Override the creation of Order objects.
-        Parameters
-        ----------
-        request: dict
+        """Override the creation of Order objects with additional cart operations.
         """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -183,6 +164,5 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows order items to be viewed or edited.
     """
-
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer

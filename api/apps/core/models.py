@@ -2,6 +2,7 @@ from django.db import models
 
 
 class BaseModel(models.Model):
+    """Base model with dates and dates ordering"""
     # A timestamp representing when this object was created.
     created_at = models.DateTimeField(auto_now_add=True)
 

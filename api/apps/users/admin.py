@@ -6,6 +6,7 @@ from .models import User
 
 
 class UserAdmin(BaseUserAdmin, HijackUserAdminMixin):
+    """Admin app change allowing admins to log as any user to application via admin panel"""
     fieldsets = (
         (None, {"fields": ("email", "password", "name", "last_login")}),
         (

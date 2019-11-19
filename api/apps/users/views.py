@@ -7,12 +7,12 @@ from .serializers import UserSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint to User CRUD
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     renderer_classes = (UserJSONRenderer,)
     permission_classes = [
         AllowAny,
     ]
-
-    def get_queryset(self):
-        return User.objects

@@ -7,6 +7,9 @@ from .serializers import ProductSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint to Product CRUD
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     renderer_classes = (ProductJSONRenderer,)
