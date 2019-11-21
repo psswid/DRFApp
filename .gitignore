@@ -1,3 +1,19 @@
 # Project exclude paths
 /venv/
 .idea
+api/__pycache__/
+api/apps/articles/__pycache__/
+api/apps/blog/__pycache__/
+api/apps/cart/__pycache__/
+api/apps/comments/__pycache__/
+api/apps/core/__pycache__/
+api/apps/products/__pycache__/
+api/apps/users/__pycache__/
+api/apps/articles/migrations/
+api/apps/blog/migrations/
+api/apps/cart/migrations/
+api/apps/comments/migrations/
+api/apps/core/migrations/
+api/apps/products/migrations/
+api/apps/users/migrations/
+celerybeat-schedule

@@ -11,7 +11,7 @@ class ApiJSONRender(JSONRenderer):
     pagination_object_count = "count"
 
     def render(self, data, accepted_media_type=None, renderer_context=None):
-        if (data.get("results", None)) is not None:
+        if data.get("results", None):
             return json.dumps(
                 {
                     self.pagination_object_label: data["results"],
@@ -19,7 +19,7 @@ class ApiJSONRender(JSONRenderer):
                 }
             )
 
-        elif data.get("errors", None) is not None:
+        elif data.get("errors", None):
             return super(ApiJSONRender, self).render(data)
 
         else:
