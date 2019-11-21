@@ -12,11 +12,7 @@ def count_comments(obj_url):
     id = url[-1]
     if "articles" in url:
         article = Article.objects.get(id=id)
-        comments_count = article.comments.all().count()
-        article.comments_count = comments_count
-        article.save()
-    if "entries" in url:
+        Article.objects.filter(id=id).update(comments_count=article.comments.all().count())
+    elif "entries" in url:
         entry = Entry.objects.get(id=id)
-        comments_count = entry.comments.all().count()
-        entry.comments_count = comments_count
-        entry.save()
+        Entry.objects.filter(id=id).update(comments_count=entry.comments.all().count())
